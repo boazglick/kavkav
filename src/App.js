@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function App() {
-  const [folders, setFolders] = useState([]);
+  const [folders, setFolders] = useState([
+    { id: 1, name: "Men's Shoes" },
+    { id: 2, name: "Women's Shoes" },
+    { id: 3, name: "Kids' Shoes" },
+  ]);
   const [currentFolder, setCurrentFolder] = useState(null);
   const [images, setImages] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/fetch-folder-data") // Replace with your backend API
-      .then((res) => res.json())
-      .then((data) => setFolders(data));
-  }, []);
-
   const handleFolderClick = (folderId) => {
-    // Fetch subfolder or image data
-    fetch(`http://localhost:3000/api/fetch-folder-data/${folderId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.type === "images") setImages(data.items);
-        else setCurrentFolder(data.items);
-      });
+    // Placeholder data for subfolders or images
+    if (folderId === 1) {
+      setImages([
+        { id: 1, name: "Shoe1", url: "/placeholder-image1.jpg" },
+        { id: 2, name: "Shoe2", url: "/placeholder-image2.jpg" },
+      ]);
+    } else {
+      setImages([]); // Clear images if no match
+    }
+    setCurrentFolder(folderId);
   };
 
   return (
@@ -27,7 +28,10 @@ function App() {
       {!currentFolder ? (
         <div>
           {folders.map((folder) => (
-            <button key={folder.id} onClick={() => handleFolderClick(folder.id)}>
+            <button
+              key={folder.id}
+              onClick={() => handleFolderClick(folder.id)}
+            >
               {folder.name}
             </button>
           ))}
